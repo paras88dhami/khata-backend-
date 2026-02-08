@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-w4erm33o7fm01din8=ac4o^5bp^opv2gw*n_)ss#+l57=d8+ex
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "10.0.2.2",
+]
 
 
 # Application definition
@@ -127,4 +131,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    )
+}
+AUTH_USER_MODEL = "login.User"
+
 
