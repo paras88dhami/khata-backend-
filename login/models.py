@@ -17,7 +17,7 @@ class UserManager(BaseUserManager):
             full_name=full_name,
         )
 
-        user.set_password(password)  # 🔐 HASH PASSWORD
+        user.set_password(password) 
         user.save(using=self._db)
         return user
 

@@ -8,6 +8,7 @@ from .serializers import RegisterSerializer, LoginSerializer
 
 class RegisterView(APIView):
     def post(self, request):
+        print("LOGIN PAYLOAD:", request.data)
         
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -33,7 +34,7 @@ class LoginView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        user = serializer.validated_data
+        user = serializer.validated_data["user"]
 
         refresh = RefreshToken.for_user(user)
 

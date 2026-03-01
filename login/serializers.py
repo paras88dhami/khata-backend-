@@ -12,10 +12,9 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
 
-
 class LoginSerializer(serializers.Serializer):
-    identifier = serializers.CharField()
-    password = serializers.CharField(write_only=True)
+    identifier = serializers.CharField(required=True, allow_blank=False)
+    password = serializers.CharField(write_only=True, required=True, allow_blank=False)
 
     def validate(self, data):
         identifier = data.get("identifier")
@@ -26,7 +25,11 @@ class LoginSerializer(serializers.Serializer):
             or User.objects.filter(phone=identifier).first()
         )
 
-        if not user or not user.check_password(password):
-            raise serializers.ValidationError("Invalid credentials")
+        if not user:
+            raise serializers.ValidationError({"identifier": "User not found"})
 
-        return user
+        if not user.check_password(password):
+            raise serializers.ValidationError({"password": "Incorrect password"})
+
+        data["user"] = user
+        return data
